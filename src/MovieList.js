@@ -3,57 +3,17 @@
 // You should include at least the following components: 
 // //NOTE FOR DEZI: CSS ANIMATIONS
 // MovieList: a container for all the Movie components and their data.
-// Movie: a component that represents movie data (i.e. image, synopsis, rating, etc…)
-// Stars: a one to five-star rating component that allows users to rate something 
-//(movies in this case, but remember that components are reusable, so you could use it elsewhere!)
-// ReviewList: a container inside of a Movie that houses Review components.
-// Review: A text review a user can leave on a movie.
-// ReviewForm: a form at the bottom of a Movie component that allows users to leave reviews. 
-//When submitted, the review should be added to the movie. All this data can be stored in an array, 
-//no networking or database needed for this assignment.
-
-/*REVIEW - There is going to be a heading. Then there will be movies. Then we will need something that, for each movie,
-there is going to be a 5 star check box. There will also be a review form and on submit, both the stars and the review
-will be added to the movie
-*/
-
-/*
-if these were classes, the first class would be the MovieList and it would
-be an empty array for objects, which would be the movie
-The next class would be movie. It would be made up of 
-
-this.deck.push(new Card(face, value, suit))
-
-this.reviews.push(new Review(stars, text))
-
-movieList is the playerHand
-
-the deck is the movie?
-
-we didnt then just put the whole deck into the playerHand. It was split up
-first. what needs to be manipulated between here and there?
-
-how do the reviews get to the movie?
-in this case I don't need to loop the data. I could have the data written as
-an object with all the info and then just have the empty array. But then how
-would i push the review into the empty array?
-
-Ok I can push an object into an empty array without needing to pass some type
-of prop or something. I can just have an empty array as an object. So... 
-
-How about I write out a MovieList with all the functionality and then figure out how to
-break it up?
-
-*/
 
 import React from 'react'
-import { useState } from "react"
-import { FaStar } from "react-icons/fa"
+import { useState } from "react";
+import { FaStar } from "react-icons/fa";
+import { Container, Col, Row, Button, Form, Card } from "react-bootstrap";
 
 export default function MovieList() {
-    const [rating, setRating] = useState(null);
-    const [hover, setHover] = useState(null);
+    const [clicked, setClicked] = useState(false);
+    const [stars, setStars] = useState(null);
     const [review, setReview] = useState("");
+    // const [reviews, setReviews] = useState([]);
 
 
     const movieList = [
@@ -64,7 +24,7 @@ export default function MovieList() {
             runTime: "1h 38m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -76,7 +36,7 @@ export default function MovieList() {
             runTime: "1h 48m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -88,7 +48,7 @@ export default function MovieList() {
             runTime: "1h 57m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -100,7 +60,7 @@ export default function MovieList() {
             runTime: "1h 50m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -112,7 +72,7 @@ export default function MovieList() {
             runTime: "1h 59m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -124,7 +84,7 @@ export default function MovieList() {
             runTime: "1h 53m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -136,7 +96,7 @@ export default function MovieList() {
             runTime: "1h 38m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -148,7 +108,7 @@ export default function MovieList() {
             runTime: "2h 23m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -160,7 +120,7 @@ export default function MovieList() {
             runTime: "2h 22m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -172,7 +132,7 @@ export default function MovieList() {
             runTime: "1h 37m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -184,7 +144,7 @@ export default function MovieList() {
             runTime: "1h 38m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
@@ -196,76 +156,119 @@ export default function MovieList() {
             runTime: "1h 46m",
             reviews: [
                 {
-                    starValue: "",
+                    starValue: null,
                     reviewText: ""
                 }
             ]
         }
     ]
 
-    function addReview(e, i) {
+    const onMouseOver = (rating) => {
+        if (clicked) return;
+        [...Array(rating)].map((star, j) => {
+          document.querySelector(`#star-${j + 1}`).classList.replace("unStar", "star")
+        })
+      };
+      const onMouseOut = (rating) => {
+        if (clicked) return;
+        [...Array(rating)].map((star, j) => {
+          document.querySelector(`#star-${j + 1}`).classList.replace("star", "unStar")
+        })
+      };
+      const onClick = (rating) => {
+        setClicked(true);
+        setStars(rating);
+        //reset stars
+        [...Array(5)].map((star, j) => {
+          document.querySelector(`#star-${j + 1}`).classList.replace("star", "unStar")
+        });
+        //highlight
+        [...Array(rating)].map((star, j) => {
+          document.querySelector(`#star-${j + 1}`).classList.replace("unStar", "star")
+        })
+      };
+      const resetForm = (e) => {
         e.preventDefault();
+        [...Array(5)].map((star, j) => {
+          document.querySelector(`#star-${j + 1}`).classList.replace("star", "unStar")
+        });
+        setStars(1);
+        setReview("");
+        setClicked(false);
+      };
+      const submitReview = (e, index) => {
+        e.preventDefault();
+        movieList[index].reviews.push(
+            {
+                starValue: stars,
+                reviewText: review
+            }
+        );
+            console.log(movieList[index].reviews);
+    
+        resetForm(e);
+      };
 
-        movieList[i].reviews.starValue.push(rating);
-        movieList[i].reviews.reviewText.push(review);
 
-        return (
-            <div>
-                <h1>{movieList[i].title}</h1>
-                <img src={movieList[i].poster} alt="" />
-                <h2>{movieList[i].rating}</h2>
-                <h3>{movieList[i].runTime}</h3>
-                <div>
-                    {[...Array(rating)].map(
-                        <FaStar
-                            color="#ffc107"
-                            />
-                    )}
-                    <p>{movieList[i].reviews.reviewText}</p>
-                </div>
-            </div>
-        )
-    }
 
 
     return (
         <div>
-            {movieList.map((movie, i) => (
+            {movieList.map((movie, i) => {
+                return (
                 <div>
                     <h1>{movieList[i].title}</h1>
                     <img src={movieList[i].poster} alt="" />
                     <h2>{movieList[i].rating}</h2>
                     <h3>{movieList[i].runTime}</h3>
-                    <form>
-                        <div>
-                            {[...Array(5)].map((star, i) => {
-                                const ratingValue = i + 1;
-
+                    <Container fluid className='App text-light text-center'>
+                    <Col md={{ span: 6, offset: 3}}>
+                        <Row className='mt-5' >
+                            <Col>
+                                {[...Array(5)].map((star, j) => {
                                 return (
-                                <label>
-                                    <input
-                                    type="radio"
-                                    name="rating"
-                                    value={ratingValue}
-                                    onClick={() => setRating(ratingValue)}
+                                <FaStar 
+                                    key={j}
+                                    className='unStar display-4'
+                                    onMouseOver={(e) => onMouseOver(j + 1)}
+                                    onMouseOut={(e) => onMouseOut(j + 1)}
+                                    onClick={(e) => onClick(j + 1)}
+                                    id={`star-${j + 1}`}
                                     />
-                                    <FaStar
-                                    className="star"
-                                    color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
-                                    size={100}
-                                    onMouseEnter={() => setHover(ratingValue)}
-                                    onMouseLeave={() => setHover(null)} 
-                                    />
-                                </label>
-                                )
+                                    );
                                 })}
-                        </div>
-                        <textarea
-                            onChange={(e) => setReview(e.target.value)} />
-                        <button onClick={(e) => addReview(e)}>Submit</button>
-                    </form>
+                            </Col>
+                        </Row>
+                        <Row className='mt-5' >
+                            <Col>
+                                <Form.Group>
+                                <Form.Control
+                                    key="reviewForm" 
+                                    as="textarea" 
+                                    rows={3} value={review} 
+                                    onChange={(e) => setReview(e.target.value)} />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row className="mt-5">
+                            <Col>
+                                <Button 
+                                key="resetButton"
+                                variant="warning" 
+                                onClick={(e) => resetForm(e)}>Reset</Button>
+                                <Button 
+                                key= "submitButton"
+                                variant='success'
+                                disabled={review == ""} 
+                                onClick={(e) => submitReview(e, i)}>Submit</Button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Container>    
                 </div>
-            ))}
+                )}
+            )
+            }
         </div>
     )
 }

@@ -1,7 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
-import { useState } from "react";
-import ReviewForm from "./ReviewForm";
 import MovieList from "./MovieList";
 
 /*REVIEW - 

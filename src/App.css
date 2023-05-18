@@ -1,18 +1,12 @@
-.posters {
-  margin: 20px;
-  box-shadow: 5px 5px 5px white;
+img {
+  width: 350px;
+  height: 500px;
+}
+
+.unStar {
+  color: #e4e5e9;
 }
 
 .star {
-  cursor: pointer;
-  transition: color 200ms;
-}
-
-input[type="radio"] {
-  display: none;
-}
-
-img {
-  height: 450px;
-  width: 300px;
+  color: #ffc107
 }
