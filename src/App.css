@@ -3,10 +3,19 @@ img {
   height: 500px;
 }
 
-.unStar {
-  color: #e4e5e9;
+.movie-container {
+  background-color: rgb(8, 8, 67);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  text-align: center;
 }
 
-.star {
-  color: #ffc107
+.individual-movie-reviews {
+  padding: 2rem;
+  margin: 2rem;
+}
+
+Card {
+  max-width: 500px;
 }
