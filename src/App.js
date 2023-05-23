@@ -2,7 +2,9 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
 import MovieList from "./MovieList";
 
-
+/* NOTE Created an array of movies to be used across the project. It is an array of objects and each object is a movie. Within each object
+is a property for the id, title, poster (which is a link to an image), rating, run time and synopsis. It also which has a property for reviews,
+which is another object that contains the properties of stars and review. Both are set to empty so they can be added to. */
 
 function App() {
 
@@ -175,6 +177,8 @@ function App() {
         ]
     }
 ]
+
+// NOTE calls the movies array as the property "movies" to be used in the MovieList
 
   return (
     <>
